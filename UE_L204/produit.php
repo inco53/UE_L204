@@ -256,8 +256,8 @@ function chemin_image_pour_nom($nom) {
 </div>
 
 <script>
-// Bouton réserver si l'utilisateur est connecté (PHP), afficher le formulaire, sinon afficher la box de login.
-// on laisse le contrôle principal à PHP via le style inline, mais on gère l'ouverture au clic pour l'UX.
+// Comportement du bouton Réserver : si connecté (PHP) on affiche le formulaire sinon afficher la box de login
+// on laisse le contrôle principal à PHP via le style inline mais on gère l'ouverture au clic pour l'UX
 document.getElementById('btn-reserver').addEventListener('click', function() {
     var isConnected = <?= empty($_SESSION['user_id']) ? 'false' : 'true' ?>;
     if (isConnected) {

@@ -115,6 +115,16 @@ INSERT INTO `utilisateurs` (`id`, `identifiant`, `motdepasse`, `role`) VALUES
 (18, 'Laure', 'mdp123', 'user'),
 (19, 'Michel', 'mdp456', 'user'),
 (20, 'Annick', 'mdp789', 'user');
+(21, 'Kévin', 'mdp789', 'user');
+(22, 'Thibault', 'mdp123', 'user');
+(23, 'Emma', 'mdp456', 'user');
+(24, 'Claire', 'mdp789', 'user');
+(25, 'Louis', 'mdp123', 'user');
+(26, 'Henri', 'mdp456', 'user');
+(27, 'Justine', 'mdp789', 'user');
+(28, 'Philippe', 'mdp456', 'user');
+(29, 'Emma', 'mdp123', 'user');
+(29, 'Christine', 'mdp456', 'user');
 
 --
 -- Index pour les tables déchargées

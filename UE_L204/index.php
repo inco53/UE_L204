@@ -14,7 +14,6 @@ if (!empty($_GET['nom'])) {
     $params[':nom'] = '%' . $_GET['nom'] . '%';
 }
 
-
 if (!empty($_GET['type'])) {
     if ($_GET['type'] == 1) {
         $sql .= " AND tarif_journee < 20";
@@ -110,27 +109,33 @@ $outils = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!-- Catalogue -->
 <section class="gallerie">
 
-    <?php foreach ($outils as $outil) : ?>
-        <div class="card">
-    <?php
-
-    $nomFichier = strtolower(str_replace(' ', '-', $outil['nom'])) . ".jpg";
-    $cheminImage = "./assets/images" . $nomFichier;
+    <?php 
+    // Récupère toutes les images .jpg du dossier
+    $images = glob('./assets/images/*.jpg'); 
+    foreach ($images as $cheminImage) : 
+        // récupère le nom du fichier sans extension
+        $nomFichier = basename($cheminImage, ".jpg"); 
+        // transforme "nom-fichier" en "Nom Fichier"
+        $nomAffichage = ucwords(str_replace('-', ' ', $nomFichier)); 
     ?>
-        <div class="img-placeholder">
-            <img src="<?= $cheminImage ?>" alt="<?= htmlspecialchars($outil['nom']) ?>">
-        </div>
+        <div class="card">
+            <div class="img-placeholder">
+                <img src="<?= $cheminImage ?>" alt="<?= htmlspecialchars($nomAffichage) ?>">
+            </div>
 
-        <h3><?= htmlspecialchars($outil['nom']) ?></h3>
-        <p>Prix : <?= $outil['tarif_journee'] ?>€ / jour</p>
-        <button class="reserve-btn"
-                onclick="window.location.href='produit.php?id=<?= $outil['id'] ?>'">
-            Réserver
-        </button>
-    </div>
+            <h3><?= htmlspecialchars($nomAffichage) ?></h3>
+            <p>Prix : N/A</p>
+            <button class="reserve-btn" disabled>
+                Réserver
+            </button>
+        </div>
     <?php endforeach; ?>
 
 </section>
+
+
+
+
 
 </body>
 </html>

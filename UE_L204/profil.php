@@ -1,3 +1,41 @@
+<?php
+session_start();
+require_once "bdd.php";
+
+// Vérifier si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Récupérer infos utilisateur
+$stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE id = ?");
+$stmt->execute([$_SESSION['user_id']]);
+$user = $stmt->fetch();
+
+// Vérification rôle admin
+$isAdmin = ($user['role'] === 'admin');
+
+// Suppression d’un utilisateur (si admin)
+if ($isAdmin && isset($_GET['delete'])) {
+    $deleteId = intval($_GET['delete']);
+
+    // Un admin ne peut pas se supprimer lui-même
+    if ($deleteId == $_SESSION['user_id']) {
+        $error = "Vous ne pouvez pas supprimer votre propre compte.";
+    } else {
+        $del = $pdo->prepare("DELETE FROM utilisateurs WHERE id = ?");
+        $del->execute([$deleteId]);
+        $success = "Le compte a bien été supprimé.";
+    }
+}
+
+// Liste des utilisateurs si admin
+if ($isAdmin) {
+    $users = $pdo->query("SELECT * FROM utilisateurs ORDER BY id")->fetchAll(PDO::FETCH_ASSOC);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,7 +48,7 @@
 </head>
 <body>
 
-<!-- Header -->
+<!----------------- Header -------------------->
 <header class="top-bar">
         <a href="./index.php" class="about-btn">Accueil</a>
         <div class="profile-icon">
@@ -22,7 +60,7 @@
 
 <div class="container">
 
-    <!-- ----------- COLONNE GAUCHE : PROFIL ----------- -->
+    <!------------------- Colonne de gauche : profil ------------------>
     <div class="profile-card">
 
         <div class="profile-img"></div>
@@ -47,12 +85,12 @@
 
     </div>
 
-    <!-- ----------- COLONNE DROITE : RÉSERVATIONS ----------- -->
+    <!-- -----------Colonne de droite : reservation----------- -->
     <div class="reservations">
 
         <h2 class="subtitle">Vos réservations</h2>
 
-        <!-- EN COURS -->
+        <!--------en cours-------->
         <div class="box">
             <h3 class="section-title">EN COURS</h3>
 
@@ -67,7 +105,7 @@
             </div>
         </div>
 
-        <!-- PASSÉES -->
+        <!--------passées------->
         <div class="box">
             <h3 class="section-title">PASSÉES</h3>
 

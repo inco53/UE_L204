@@ -124,7 +124,7 @@ INSERT INTO `utilisateurs` (`id`, `identifiant`, `motdepasse`, `role`) VALUES
 (27, 'Justine', 'mdp789', 'user');
 (28, 'Philippe', 'mdp456', 'user');
 (29, 'Emma', 'mdp123', 'user');
-(29, 'Christine', 'mdp456', 'user');
+(30, 'Christine', 'mdp456', 'user');
 
 --
 -- Index pour les tables déchargées

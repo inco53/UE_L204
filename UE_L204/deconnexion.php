@@ -1,18 +1,12 @@
-<?php 
-    session_start();
-    /*
-        Se déconnecter
-    */
+<?php
+session_start();
 
-    // vide le tableau de la session
-    $_SESSION = [];     
-    // supprime les variables de la session
-    session_unset();  
-    // permet de détruire la session        
-    session_destroy();       
+// Détruire complètement la session
+$_SESSION = [];
+session_unset();
+session_destroy();
 
-    // Rediriger vers la page d'accueil
-    header("Location: ../index.php");
-    exit;
-
+// Rediriger vers la page de connexion
+header("Location: connexion.php");
+exit;
 ?>

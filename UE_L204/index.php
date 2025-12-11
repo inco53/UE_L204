@@ -125,8 +125,7 @@ function normalize($str) {
     // Supprime les accents
     $str = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
     $str = strtolower($str);
-    // supprime tout sauf lettres et chiffres
-    $str = preg_replace('/[^a-z0-9]/', '', $str); 
+    $str = preg_replace('/[^a-z0-9]/', '', $str); // supprime tout sauf lettres et chiffres
     return $str;
 }
 
@@ -165,9 +164,6 @@ foreach ($outils as $outil):
 <?php endforeach; ?>
 
 </section>
-
-
-
 
 
 </body>

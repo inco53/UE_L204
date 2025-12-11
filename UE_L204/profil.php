@@ -16,9 +16,9 @@ $user = $stmt->fetch();
 // Vérifie le rôle : utilisateur ou professionnel
 $isPro = ($user['role'] === 'admin');
 
-// =======================================================================
+
 // SUPPRESSION D’UN COMPTE PAR LE PROFESSIONNEL
-// =======================================================================
+
 $messageSuppression = "";
 if ($isPro && isset($_POST['supprimer_compte'])) {
     $idASupprimer = (int)$_POST['supprimer_compte'];
@@ -35,9 +35,8 @@ if ($isPro && isset($_POST['supprimer_compte'])) {
     }
 }
 
-// =======================================================================
 // ANNULATION D’UNE RÉSERVATION PAR L’UTILISATEUR
-// =======================================================================
+
 if (!$isPro && isset($_POST['annuler_reservation'])) {
     $resId = (int)$_POST['annuler_reservation'];
     // Vérifie que la réservation appartient bien à l'utilisateur
@@ -49,9 +48,9 @@ if (!$isPro && isset($_POST['annuler_reservation'])) {
     }
 }
 
-// =======================================================================
+
 // UTILISATEUR NORMAL : récupère ses réservations
-// =======================================================================
+
 $reservations = [];
 if (!$isPro) {
     $stmt = $pdo->prepare("
@@ -65,9 +64,8 @@ if (!$isPro) {
     $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// =======================================================================
 // PROFESSIONNEL : liste des outils + liste des utilisateurs
-// =======================================================================
+
 $mesOutils = [];
 $listeUtilisateurs = [];
 if ($isPro) {
@@ -79,9 +77,8 @@ if ($isPro) {
     $listeUtilisateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// =======================================================================
 // AJOUT D’UN OUTIL (professionnel)
-// =======================================================================
+
 $ajoutMsg = "";
 if ($isPro && isset($_POST['ajout_outil'])) {
     $nom = trim($_POST['nom']);
@@ -229,4 +226,3 @@ if ($isPro && isset($_POST['ajout_outil'])) {
 
 </body>
 </html>
-

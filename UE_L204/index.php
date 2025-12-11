@@ -106,30 +106,63 @@ $outils = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </fieldset>
 </form>
 
-<!-- Catalogue -->
 <section class="gallerie">
 
-    <?php 
-    // Récupère toutes les images .jpg du dossier
-    $images = glob('./assets/images/*.jpg'); 
-    foreach ($images as $cheminImage) : 
-        // récupère le nom du fichier sans extension
-        $nomFichier = basename($cheminImage, ".jpg"); 
-        // transforme "nom-fichier" en "Nom Fichier"
-        $nomAffichage = ucwords(str_replace('-', ' ', $nomFichier)); 
-    ?>
-        <div class="card">
-            <div class="img-placeholder">
-                <img src="<?= $cheminImage ?>" alt="<?= htmlspecialchars($nomAffichage) ?>">
-            </div>
+<?php
+// Extensions possibles
+$extensions = ['jpg', 'jpeg', 'png', 'webp'];
 
-            <h3><?= htmlspecialchars($nomAffichage) ?></h3>
-            <p>Prix : N/A</p>
-            <button class="reserve-btn" disabled>
-                Réserver
-            </button>
+// Lire tous les fichiers du dossier images
+$imageFiles = [];
+foreach ($extensions as $ext) {
+    foreach (glob("./assets/images/*.$ext") as $file) {
+        $imageFiles[] = $file;
+    }
+}
+
+// Fonction pour normaliser les noms : minuscules, sans accents
+function normalize($str) {
+    // Supprime les accents
+    $str = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
+    $str = strtolower($str);
+    // supprime tout sauf lettres et chiffres
+    $str = preg_replace('/[^a-z0-9]/', '', $str); 
+    return $str;
+}
+
+foreach ($outils as $outil):
+    $outilNormal = normalize($outil['nom']);
+
+    // Image par défaut
+    $cheminImage = "./assets/images/default.jpg";
+
+    // Chercher une image correspondant au nom de l'outil
+    foreach ($imageFiles as $img) {
+        $imgNom = basename($img, "." . pathinfo($img, PATHINFO_EXTENSION));
+        $imgNormal = normalize($imgNom);
+
+        if ($imgNormal === $outilNormal) {
+            $cheminImage = $img;
+            break;
+        }
+    }
+?>
+
+    <div class="card">
+        <div class="img-placeholder">
+            <img src="<?= $cheminImage ?>" alt="<?= htmlspecialchars($outil['nom']) ?>">
         </div>
-    <?php endforeach; ?>
+
+        <h3><?= htmlspecialchars($outil['nom']) ?></h3>
+        <p>Prix : <?= htmlspecialchars($outil['tarif_journee']) ?> € / jour</p>
+
+        <button class="reserve-btn"
+                onclick="window.location.href='produit.php?id=<?= urlencode($outil['id']) ?>'">
+            Réserver
+        </button>
+    </div>
+
+<?php endforeach; ?>
 
 </section>
 
